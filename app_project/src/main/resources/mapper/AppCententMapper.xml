@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dh.appproject.mapper.AppCententMapper" >
+  <resultMap id="BaseResultMap" type="com.dh.appproject.model.AppCentent" >
+    <constructor >
+      <idArg column="id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="url" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="picture_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="upload_id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="isitvalid" jdbcType="VARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, url, picture_name, upload_id, isitvalid
+  </sql>
+  <select id="PrimaryKeyOne" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select * from app_centent c where c.upload_id = #{uploadId}  order by c.picture_name limit 1
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from app_centent
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.dh.appproject.model.AppCentent" >
+    insert into app_centent (id, url, picture_name, 
+      upload_id, isitvalid)
+    values (#{id,jdbcType=BIGINT}, #{url,jdbcType=VARCHAR}, #{pictureName,jdbcType=VARCHAR}, 
+      #{uploadId,jdbcType=BIGINT}, #{isitvalid,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dh.appproject.model.AppCentent" >
+    insert into app_centent
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="url != null" >
+        url,
+      </if>
+      <if test="pictureName != null" >
+        picture_name,
+      </if>
+      <if test="uploadId != null" >
+        upload_id,
+      </if>
+      <if test="isitvalid != null" >
+        isitvalid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="url != null" >
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="pictureName != null" >
+        #{pictureName,jdbcType=VARCHAR},
+      </if>
+      <if test="uploadId != null" >
+        #{uploadId,jdbcType=BIGINT},
+      </if>
+      <if test="isitvalid != null" >
+        #{isitvalid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dh.appproject.model.AppCentent" >
+    update app_centent
+    <set >
+      <if test="url != null" >
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="pictureName != null" >
+        picture_name = #{pictureName,jdbcType=VARCHAR},
+      </if>
+      <if test="uploadId != null" >
+        upload_id = #{uploadId,jdbcType=BIGINT},
+      </if>
+      <if test="isitvalid != null" >
+        isitvalid = #{isitvalid,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dh.appproject.model.AppCentent" >
+    update app_centent
+    set url = #{url,jdbcType=VARCHAR},
+      picture_name = #{pictureName,jdbcType=VARCHAR},
+      upload_id = #{uploadId,jdbcType=BIGINT},
+      isitvalid = #{isitvalid,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByAllCententList" resultType="com.dh.appproject.model.AppCentent" parameterType="java.lang.Long">
+    SELECT
+    c.id,
+    c.picture_name,
+    c.url,
+    u.id upload_id
+    FROM
+    app_centent c
+    LEFT JOIN app_upload_information u ON u.id = c.upload_id
+    AND u.isitvalid = '1'
+    WHERE
+    c.isitvalid = '1'
+    <if test="uploadId != null">
+      and c.upload_id  = #{uploadId}
+    </if>
+  </select>
+</mapper>

@@ -1,0 +1,40 @@
+server:
+  servlet:
+    context-path: /
+  port: 8080
+spring:
+  mvc:
+    view:
+      prefix: /pages/
+      suffix: .html
+  servlet:
+    multipart:
+      max-request-size: 200MB
+      max-file-size: 200MB
+  main:
+    allow-circular-references: true
+  aop:
+    auto: true
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://60.247.158.102:3306/nihaodonghao?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+    username: nihaodonghao
+    password: dh123456
+  devtools:
+    restart:
+      enabled: true
+      additional-paths: src/main/java
+logging:
+  level:
+    com.dh.appproject.mapper: debug
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.dh.appproject.mapper
+  configuration:
+    map-underscore-to-camel-case: true
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql

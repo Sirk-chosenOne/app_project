@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dh.appproject.mapper.AppSysLogMapper">
+    <resultMap id="BaseResultMap" type="com.dh.appproject.model.AppSysLog">
+        <constructor>
+            <idArg column="id" jdbcType="BIGINT" javaType="java.lang.Long"/>
+            <arg column="method" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="params" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="user_id" jdbcType="BIGINT" javaType="java.lang.Long"/>
+            <arg column="user_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="operation" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="run_time" jdbcType="INTEGER" javaType="java.lang.Long"/>
+            <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <arg column="ip" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        </constructor>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id
+        , method, params, user_id, user_name, operation, run_time, create_time, ip
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_log
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectByAllLogList" resultType="com.dh.appproject.model.AppSysLog" parameterType="map">
+        SELECT
+        asl.id,
+        asl.method,
+        asl.params,
+        asl.user_id,
+        asl.user_name,
+        asl.operation,
+        asl.run_time,
+        asl.create_time,
+        asl.ip
+        FROM
+        sys_log asl where 1=1
+        <if test="operation != null">
+            and asl.operation like concat( '%' , #{operation}, '%')
+        </if>
+        <if test="userName != null">
+            and asl.user_name  like  concat( '%' , #{userName}, '%')
+        </if>
+        <if test="ip != null">
+            and asl.ip like  concat( '%' , #{ip}, '%')
+        </if>
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from sys_log
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="com.dh.appproject.model.AppSysLog">
+        insert into sys_log (id, method, params,
+                                 user_id, user_name, operation,
+                                 run_time, create_time, ip)
+        values (#{id,jdbcType=BIGINT}, #{method,jdbcType=VARCHAR}, #{params,jdbcType=VARCHAR},
+                #{userId,jdbcType=BIGINT}, #{userName,jdbcType=VARCHAR}, #{operation,jdbcType=VARCHAR},
+                #{runTime,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{ip,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.dh.appproject.model.AppSysLog">
+        insert into sys_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="method != null">
+                method,
+            </if>
+            <if test="params != null">
+                params,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="userName != null">
+                user_name,
+            </if>
+            <if test="operation != null">
+                operation,
+            </if>
+            <if test="runTime != null">
+                run_time,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="ip != null">
+                ip,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="method != null">
+                #{method,jdbcType=VARCHAR},
+            </if>
+            <if test="params != null">
+                #{params,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="userName != null">
+                #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="operation != null">
+                #{operation,jdbcType=VARCHAR},
+            </if>
+            <if test="runTime != null">
+                #{runTime,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="ip != null">
+                #{ip,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.dh.appproject.model.AppSysLog">
+        update sys_log
+        <set>
+            <if test="method != null">
+                method = #{method,jdbcType=VARCHAR},
+            </if>
+            <if test="params != null">
+                params = #{params,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="userName != null">
+                user_name = #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="operation != null">
+                operation = #{operation,jdbcType=VARCHAR},
+            </if>
+            <if test="runTime != null">
+                run_time = #{runTime,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="ip != null">
+                ip = #{ip,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.dh.appproject.model.AppSysLog">
+        update sys_log
+        set method      = #{method,jdbcType=VARCHAR},
+            params      = #{params,jdbcType=VARCHAR},
+            user_id     = #{userId,jdbcType=BIGINT},
+            user_name   = #{userName,jdbcType=VARCHAR},
+            operation   = #{operation,jdbcType=VARCHAR},
+            run_time    = #{runTime,jdbcType=BIGINT},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            ip          = #{ip,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+</mapper>
